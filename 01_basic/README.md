@@ -193,7 +193,7 @@ if (typeof Object.prototype.clone === "undefined") {
 
 ``` js
 for (var i in man) {
-    if (man.hasOwnPropery(i)) {
+    if (man.hasOwnProperty(i)) {
         console.log(i, ";", man[i]);
     }
 }
@@ -211,8 +211,8 @@ for (var i in man) {
         console.log(i, ":", man[i]);
     }
 } // man객체가 hasOwnProperty를 재정의해도 활용 가능
-// 프로퍼티 탐색이 Object까지 멀리 거슬러 올라가지 않게 하려면 지역 변수 사용하여 메서드 '캐시'
 
+// 프로퍼티 탐색이 Object까지 멀리 거슬러 올라가지 않게 하려면 지역 변수 사용하여 메서드 '캐시'
 var i,
     hasOwn = Object.prototype.hasOwnProperty;
     for (i in man) {
