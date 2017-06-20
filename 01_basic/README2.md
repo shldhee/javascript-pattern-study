@@ -159,3 +159,144 @@ Number(b); // NaN
 parseInt(a); // 8
 parseInt(b); // 8
 ```
+
+## 8. 코딩규칙
+
+### 들여쓰기
+
+### 중괄호
+
+중괄호는 생략할 수 있을 때도 항상 써야 한다.
+
+``` js
+// 나쁜 습관
+for (var i = 0; i < 10; i += 1)
+  alert(i);
+
+// 나쁜 습관
+for (var i = 0; i < 10; i += 1)
+  alert(i);
+  alert(i + " is " + ( i % 2 ? "odd" : "even")); // 루프 바깥에 있다.
+
+// 좋은 습관
+for (var i = 0; i < 10; i += 1) {
+  alert(i);
+}
+```
+
+if문도 마찬가지이다.
+
+### 여는 중괄호의 위치
+
+자바스크립트는 까다롭지 않아서 세미콜론을 쓰지 않고 행을 종료하면 알아서 대신 세미콜론을 추가 해준다. 이러한 동작 방식은 함수의 반환 값이 객체 리터럴이고 이 객체의 여는 중괄호가 다음행에 올 경우 문제를 일으킬 수 있다.
+
+``` js
+function func() { // 예상과 다른 반환 값이 나온다.
+  return
+  {
+    name: "Batman"
+  };
+}
+
+function func() {
+  return undefined;
+  {
+    name: "Batman"
+  }
+}
+
+// 올바른
+function func () {
+  return {
+    name: "Batman"
+  }
+}
+```
+
+name 프로퍼티를 가진 객체를 반환하지 않고 자동으로 추가된 세미콜론 떄문에 이 함수는 `undefined`를 반환한다.
+
+### 공백
+
+``` js
+for (var i = 0; i < 10; i += 1 )
+for (Var i = 0, max = 10; i < max; i += 1)
+var a = [1, 2, 3];
+var o = {a: 1, b: 2};
+myFunc(a, b, c)
+function myFunc() {}
+var myFunc = function () {};
+
+var d = 0,
+    a = b + 1;
+if (a && b && c) {
+    d = a % c;
+    a += d;
+}
+```
+
+## 9. 명명 규칙
+
+### 생성자를 대문자로 시작하기
+
+``` js
+var adam = new Person();
+```
+
+### 단어 구분
+
+낙타 표기법(camel case)
+
+``` js
+MyConstructor()
+myFunciont()
+calculateArea()
+getFirstName()
+
+변수
+first_name
+favorite_bands
+old_company_name
+```
+
+### 그 외의 명명 패턴
+
+상수(값이 변경돼서는 안되는 변수)는 대문자 표시
+
+``` js
+var PI = 3.14,
+    MAX_WIDTH = 800;
+```
+
+비공개 메서드나 프로퍼티명에 접두어로 밑줄을 붙혀 구별하기 쉽게 한다
+
+``` js
+ver person = {
+  getName: function() {
+    return this._getFisrt() + ' ' + this._getLast();
+  },
+  _getFirst: function () {
+
+  }, //...
+}
+```
+
+`_getFirst()` 메서드는 실제로는 일반적인 공개 메서드이지만, 밑줄 접두어를 사용함으로써 향후 이 메서드의 동작을 보장할 수 없고 직접 사용해서는 안된다는 사실을 경고하는 것이다.
+_private 규칙의 몇 가지 변형 패턴
+
+* name_ 또는 getElements_()와 같이 비공개라는 의미로 밑줄을 끝에 붙인다.
+* _projected 프로퍼티에는 밑줄 한 개, __private 프로퍼티에는 밑줄 두 개를 사용
+* 파이어폭스에서는 자바스크립트가 공식적으로 지원하지 않는 내부 프로퍼티를 일부 사용 이 프로퍼티명에는 __proto__또는 __parent__처럼 앞뒤로 두 개의 밑줄이 붙어있다.
+
+## 10. 주석 작성
+
+**모든 함수의 매개변수와 반환 값에 대해서는 문서화할 필요가 있다.**
+
+---
+## 요약
+
+* 전역변수를 최소화한다. 애플리케이션 당 전역 변수가 한 개만 존재하는 것이 가장 이상적이다.
+* 함수 내 var 선언을 한 번만 사용한다. 단일한 위치에 모든 변수를 모아놓고 지켜볼 수 있고,변수 호이스팅으로 인해 발생하는 예기치 못한 부작용을 방지한다.
+* for 루프와 for-in 루프, switch문에 대해 살펴보았다.
+* 내장 생성자 프로토타입을 확장하지 않는다.
+* 코드 작성 규칙 준수
+* 생성자, 함수, 변수명에 명명 규칙 준수
