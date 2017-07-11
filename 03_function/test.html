@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Document</title>
+</head>
+<body>
+	<script type="text/javascript">
+	({
+		// 여기에 설정 값(설정 상수)들을 정의할 수 있다.
+		maxwidth: 600,
+		maxheight: 400,
+
+		// 유틸리티 메서드 또한 정의 할수 있다.
+		gimmeMax: function () {
+			return this.maxwidth + "x" + this.maxheight;
+		},
+
+		// 초기화
+		init: function () {
+			console.log(this.gimmeMax());
+			// 더 많은 초기화 작업들...
+			return this;
+		}
+	}).init();
+	</script>
+</body>
+</html>
