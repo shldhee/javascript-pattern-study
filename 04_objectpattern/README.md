@@ -209,3 +209,112 @@ console.log(toy.stretch()); 'stretch()' 공개
 ```
 
 ### 3-1) 비공개(private) 멤버
+
+클로저를 사용해 구현할 수 있다.
+
+``` js
+function Gadget() {
+  // 비공개 멤버
+  var name = 'iPod';
+  // 공개된 함수
+  this.getName = function () {
+    return name;
+  };
+}
+var toy = new Gadget();
+
+// 'name'은 비공개이므로
+console.log(toy.name); //undefined
+
+console.log(toy.getName()) // "iPod" 공개메서드인 getName()을 통해 접근 가능
+```
+
+**비공개 멤버를 구현하기 위해 비공개로 유지할 데이터를 함수로 감싸기만 하면 된다. 이 데이터들은 함수의 지역변수로 만들면, 함수 외부에서는 접근할 수 없다.**
+
+### 3-2) 특권(privileged) 메서드
+
+> 비공개 멤버에 접근권한을 가진 (즉 일종의 특권을 부여받은) 공개 메서드를 가리키는 이름일 뿐이다. 앞선 예제에서 `getName()`은 비공개 프로퍼티인 `name`에 *특별한* 접근권한을 가지고 있기 때문에 특권 메서드라고 할 수 있다.
+
+### 3-3) 비공개 멤버의 허점
+
+* 파폭 eval() 생략
+* 특권 메서드에서 비공개 변수의 값을 객체 또는 배열로 반환시에는 값이 아닌 참조가 반환되기 때문에, 외부 코드에서 비공개 변수 값을 수정 할 수 있다.
+
+``` js
+function Gadget() {
+  //비공개 멤버
+  var specs = {
+    screen_width: 320,
+    screen_height: 480,
+    color: "white"
+  };
+
+  // 공개 함수
+  this.getSpecs = function () {
+    return specs;
+  };
+}
+
+var toy = new Gadget(),
+    specs = toy.getSpecs(); // `specs`객체에 대한 참조를 반환, `specs`은 감춰진 비공개처럼 보이지만 Gadget사용자에 의해 변경될 수도 있다.
+
+// 비공개 객체가 변경된다.
+specs.color = "black";
+specs.price = "free";
+
+console.dir(toy.getSpecs());
+```
+
+위와 같은 방법을 해결 하기 위해서는 객체나 배열에 대한 참조를 전달할 때 주의를 기울이는 수 밖에 없다.
+
+1. `getSpecs()`에서 아예 새로운 객체를 만들어 사용자에게 쓸모있을 만한 데이터 일부만 담아 반환하는 것. ***최소 권한의 원칙(Principle of Least Authority, POLA)*** 필요 이상으로 권한을 주지 말아야 한다는 뜻
+1. 예를 들어 Gadget 사용자가 Gadget이 어떤 상자에 들어맞을지를 알아보고 싶으면 Gadget의 면적만 알려주면 된다. `getDimenstions()`라는 메서드를 만들어 `width`, `height`만을 담은 객체를 반환
+1. `getSpecs()`메서드는 필요 없을수도 있다.
+
+모든 데이터를 넘겨야 한다면, 객체를 복사하는 범용 함수를 사용하여 `specs`객체의 복사본을 만든다.
+
+* 주어진 객체의 최상위 프로퍼티만을 복사(얕은 복사, shallow copy)
+* 모든 중첩 프로퍼티를 재귀적으로 복사(깊은 복사, deep copy)
+
+### 3-4) 객체 리터럴과 비공개 멤버
+
+객체 리터럴로 객체를 생성한 경우 비공개 멤버 구현하기
+익명 즉시 실행 함수를 추가하여 클로저를 만든다.
+
+``` js
+var myobj; // 이 변수에 객체 할당
+(function () {
+  // 비공개 멤버
+  var name = "LEE";
+
+  // 공개될 부분을 구현
+  // var를 사용하지 않았다는 데 주의하라(전역 변수에서 이미 선언함)
+
+  myobj = {
+    // 특권메서드
+    getName: function () {
+      return name;
+    }
+  };
+}());
+
+myobj.getName();
+```
+
+모듈 패턴의 기초가 되는 부분(위와 기본 개념은 동일하지만 약간 다르다.)
+
+``` js
+var myobj = (function () {
+  // 비공개 멤버
+  var name = "LEE";
+
+  //공개될 부분을 구현한다.
+  return {
+    getName: function() {
+      return name;
+    }
+  };
+}());
+
+myobj.getName(); // "LEE"
+```
