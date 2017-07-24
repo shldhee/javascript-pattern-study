@@ -1,45 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Document</title>
 </head>
-<body>
-<script type="text/javascript">
-  // debugger;
-  var MYAPP = MYAPP || {};
 
-  MYAPP.namespace = function (ns_string) {
-    var parts = ns_string.split('.'),
+<body>
+  <script type="text/javascript">
+    // debugger;
+    var MYAPP = MYAPP || {};
+
+    MYAPP.namespace = function (ns_string) {
+      var parts = ns_string.split('.'),
         parent = MYAPP,
         i;
 
-    // 처음에 중복되는 전역 객체명은 제거한다.
-    if( parts[0] === "MYAPP") {
-      parts = parts.slice(1); // MYAPP을 제외한 배열 반환
-    }
-
-    for (i = 0; i< parts.length; i += 1) {
-      // 프로퍼티가 존재하지 않으면 생성한다.
-      // 객체 대괄호 표기법 이용할때는 표현식이거나 예약어일때
-      // 1. MYAPP.modules === undefined
-      // 2. MYAPP.modules.module2 === undefined
-      if (typeof parent[parts[i]] === 'undefined') {
-        // 1. MYAPP.modules = {};
-        // 2. MYAPP.modules.module2 = {};
-        parent[parts[i]] = {};
+      if (parts[0] === "MYAPP") {
+        parts = parts.slice(1); // MYAPP을 제외한 배열 반환
       }
-      // 1. parent = MYAPP.modules;
-      // 2. parent = MYAPP.modules.module2;
-      parent = parent[parts[i]];
+
+      for (i = 0; i < parts.length; i += 1) {
+        if (typeof parent[parts[i]] === 'undefined') {
+          parent[parts[i]] = {};
+        }
+        parent = parent[parts[i]];
+      }
+      return parent;
     }
-    return parent; // parent로 리턴하는 이유??
-    //return MYAPP; ??
-  }
-  console.log(MYAPP.namespace('MYAPP.modules.module2'));
-  console.log(MYAPP);
-</script>
+    console.log(MYAPP.namespace('MYAPP.modules.module2'));
+    console.log(MYAPP);
+  </script>
 </body>
+
 </html>

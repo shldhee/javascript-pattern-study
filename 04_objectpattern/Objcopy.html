@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    // debugger;
+    var a = {
+      b: {
+        c: {}
+      }
+    };
+
+    var parent;
+
+    parent = a;
+
+    console.log(a);
+    console.log(parent);
+
+    var d = 'str';
+    a[d] = {};
+    a = a[d]; // a는 {} 로 되고, parent는 a[d]의 객체 즉, a = {d : {}}; 이걸 참조한다.
+
+    console.log(a); // a = {};
+    console.log(parent); // parent = {b : {}, str; {} }
+
+    var e = 'test';
+    a[e] = {};
+    a = a[e];
+  </script>
+</body>
+
+</html>
