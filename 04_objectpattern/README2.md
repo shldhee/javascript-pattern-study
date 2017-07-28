@@ -194,3 +194,57 @@ Sandbox.prototype = {
 [메모제이션 패턴][66fc6b8b]
 
   [66fc6b8b]: https://github.com/shldhee/javascript-pattern-study/tree/master/03_function#8-함수-프로퍼티---메모이제이션memoization-패턴 "메모제이션 패턴"
+
+다음 예제는 `Gadget`이라는 생성자에 스태틱 메서드인 `isShiny()`와 일반적인 인스턴스 메서드인 `setPrice()`를 정의한 것이다.
+**`isShiny()`는 특정 `Gadget` 객체를 필요로 하지 않기 떄문에 스태틱 메서드라 할 수 있다.**
+모든 `Gadget`이 빛나는지 알아내는 데는 특정한 하나의 `Gadget`이 필요하지 않는것과 같다.(아무거나 하나의 `Gadget`만 있으면 된다는 뜻인듯?)
+**반면 개별 `Gadget`들의 가격은 다를 수 있기 떄문에 `setPrice()` 메서드를 쓰려면 객체가 필요하다**
+
+``` js
+// 생성자
+var Gadget = function () {};
+
+// 스태틱 메서드
+Gadget.isShiny = function () {
+  return "you bet";
+};
+
+// 프로토타입에 일반적인 함수를 추가했다.
+Gadget.prototype.setPrice = function (price) {
+  this.price = price;
+};
+```
+
+메서드 호출 비교
+**스태틱 메서드인 `isShiny()`는 생성자를 통해 직접 호출**
+**일반적인 메서드인 `setPrice()`는 인스턴스를 통해 호출**
+
+``` js
+// 스태틱 메서드를 호출하는 방법
+Gadget.isShiny(); // "you bet";
+
+// 인스턴스를 생성한 후 메서드를 호출 , 인스턴스 메서드
+var iphone = new Gadget();
+iphone.setPrice(500);
+```
+
+인스턴스 메서드를 스태틱 메서드와 같은 방법으로 호출하면 동작하지 않는다.
+스태틱 메서드 역시 인스터스인 `iphone` 객체를 사용해 호출하면 동작하지 않는다.
+
+``` js
+typeof Gadget.setPrice; // "undefined"
+typeof iphone.isShiny; // "undefined"
+```
+
+스태틱 메서드가 인스턴스를 통해 호출했을 때도 동작한다면 편리한 경우가 있을 수 있다.
+이 때는 간단하게 프로토타입에 새로운 메서드를 추가하는 것만으로 쉽게 구현할 수 있다.
+이 새로운 메서드는 원래의 스태틱 메서드를 가리키는 일종의 퍼사드 역할을 한다.
+
+``` js
+Gadget.prototype.isShiny = Gadget.isShiny;
+iphone.isShiny(); // "you bet"
+```
+
+**이런 경우네는 스태틱 메서드 안에서 `this`를 사용할 때 주의를 기울여야 한다.**
+`Gadget.isShiny()`를 호출했을 때 `isShiny()`내부의 `this`는 `Gadget`생성자를 가리키지만
+`iphone.isShiny()`를 호출했을 때 `this`는 `iphone`을 가리키게된다.
