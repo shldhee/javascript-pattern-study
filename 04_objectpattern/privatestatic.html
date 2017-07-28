@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Document</title>
+</head>
+<body>
+	<script type="text/javascript">
+		/*var Gadget = (function() {
+			// 스태틱 변수/프로퍼티
+			var counter = 0; // 비공개 멤버
+
+			// 생성자의 새로운 구현 버전을 반환한다.
+			return function () { // 클로저 함수
+				console.log(counter += 1);
+			};
+		}()); // 즉시 실행한다.
+
+		var g1 = new Gadget(); // 1
+		var g2 = new Gadget(); // 2
+		var g3 = new Gadget(); // 3*/
+
+		var Gadget = (function () {
+			// 스태틱 변수/프로퍼티
+			var counter = 0,
+			    NewGadget;
+
+			// 이 부분이 생성자를 새롭게 구현한 부분이다.
+			NewGadget = function () {
+				counter += 1;
+			};
+
+			// 특권 메서드
+			NewGadget.prototype.getLastId = function () {
+				return counter;
+			};
+
+			// 생성자를 덮어쓴다.
+			return NewGadget; // 원래는 this인데 newGadget으로 덮어씐다.?
+		}());
+	</script>
+</body>
+</html>

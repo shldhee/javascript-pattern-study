@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Document</title>
+</head>
+<body>
+	<script type="text/javascript">
+		var Gadget = function (price) {
+			this.price = price;
+		}
+
+		// 스태틱 메서드
+		Gadget.isShiny = function () {
+
+			// 다음은 항상 동작한다.
+			var msg = "you bet";
+
+			if (this instanceof Gadget) {
+				// 다음은 스태틱 하지 않은 방식으로 호출되었을 때만 작동한다.
+				msg += ", it costs $" + this.price + '!';
+			}
+
+			return msg;
+		};
+
+		// 프로토타입에 일반적인 메서드를 추가한다.
+		Gadget.prototype.isShiny = function () {
+			return Gadget.isShiny.call(this);
+		};
+
+		console.log(Gadget.isShiny());
+	</script>
+</body>
+</html>
