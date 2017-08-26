@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    // 부모생성자
+    function CarMaker() { }
+
+    // 부모의 메서드
+    CarMaker.prototype.drive = function () {
+      return "Vroom, I have " + this.doors + " doors";
+    };
+
+    // 스태틱 factory 메서드
+    CarMaker.factory = function (type) {
+      var constr = type,
+        newcar;
+
+      // 생성자가 존재하지 않으면 에러
+      if (typeof CarMaker[constr] !== "function") {
+        throw {
+          name: "Error",
+          message: constr + " doesnt't exist"
+        };
+      }
+
+      // 생성자의 존재를 확인했으므로 부모를 상속
+      // 상속은 단 한번만 실행하도록 한다.
+
+      if (typeof CarMaker[constr].prototype.drive !== "function") {
+        CarMaker[constr].prototype = new CarMaker();
+      }
+
+      // 새로운 인스턴스를 생성
+      newcar = new CarMaker[constr]();
+
+      // 다른 메서드 호출이 필요하면 여기서 실행한 후, 인스턴스를 반환
+      return newcar;
+    };
+
+    // 구체적인 자동차 메이커들를 선언한다.
+		CarMaker.Compact = function () {
+			this.doors = 4;
+		};
+		CarMaker.Convertible = function () {
+			this.doors = 2;
+		};
+		CarMaker.SUV = function () {
+			this.doors = 24;
+		};
+
+		var corolla = CarMaker.factory('Compact');
+		var solstice = CarMaker.factory('Convertible');
+		var cherokee = CarMaker.factory('SUV');
+
+		corolla.drive();
+		solstice.drive();
+		cherokee.drive();
+
+  </script>
+</body>
+
+</html>

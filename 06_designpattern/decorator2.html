@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Document</title>
+</head>
+<body>
+	<script type="text/javascript">
+		function Sale(price) {
+			this.price = (price > 0) || 100;
+			this.decorators._list = [];
+		}
+
+		Sale.decorators = {};
+
+		Sale.decorators.fedtax = {
+			getPrice: function (price) {
+				return price + price * 5 / 100;
+			}
+		};
+
+		Sale.decorators.quebec = {
+			getPrice: function (price) {
+				return price + price * 7.5 / 100;
+			}
+		};
+
+		Sale.decorators.money = {
+			getPrice: function (price) {
+				return "$" + price.toFixed(2);
+			}
+		};
+
+		Sale.prototype.decorate = function (decorator) {
+			this.decorators_list.push(decorator);
+		}
+
+		Sale.prototype.getPrice = function() {
+			var price = this.price,
+			i,
+			max = this.decorators_list.length,
+			name;
+
+			for ( i = 0; i < max; i += 1 ) {
+				name = this.decorators_list[i];
+				price = Sale.decoratorsp[name].getPrice(price);
+			}
+
+			return price;
+		};
+	</script>
+</body>
+</html>

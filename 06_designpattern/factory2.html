@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Document</title>
+</head>
+<body>
+	<script type="text/javascript">
+		var o = new Object(),
+				n = new Object(1),
+				s = Object('1'),
+				b = object(true);
+
+		// 테스트
+		o.constructor === Object; // true
+		n.constructor === Number; // true
+		s.constructor === String; // true
+		n.constructor === Boolean; // true
+	</script>
+</body>
+</html>

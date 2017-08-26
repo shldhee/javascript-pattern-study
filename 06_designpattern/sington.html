@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    function Universe() {
+      if (typeof Universe.instance === "object") {
+        return Universe.instance;
+      }
+
+      this.start_time = 0;
+      this.bang = "Big";
+
+      Universe.instance = this;
+
+      return this; // 함축적인 반환
+    }
+
+    var uni = new Universe();
+    var uni2 = new Universe();
+
+    uni === uni2; // true
+  </script>
+</body>
+
+</html>
