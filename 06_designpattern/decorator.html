@@ -61,11 +61,12 @@
 			return newobj;
 		}
 
-		var sale = new Sale(100);
-		sale = sale.decorate('fedtax');
-		sale.getPrice();
-		sale = sale.decorate('cdn');
-		sale.getPrice();
+		var sale = new Sale(100); // 가격은 100달러
+		sale = sale.decorate('fedtax'); // 연방세 추가
+		sale = sale.decorate('quebec'); // 지방세 추가
+		sale = sale.decorate('money'); // 통화 형식 지정
+		var a = sale.getPrice(); // "$112.88"
+		console.dir(sale);
 	</script>
 </body>
 </html>
