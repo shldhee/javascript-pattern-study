@@ -234,3 +234,40 @@ if (document.addEventListener) { // W3C
 중복 작업이 반복되므로 7장 퍼사드 메서드로 이벤트 유틸리티를 만들어 두는게 좋다.
 
 ### 3-2) 이벤트 위임
+
+이벤트 위임 패턴은 이벤트 버블링을 이용해서 개별 노드에 붙는 이벤트 리스너의 개수를 줄여준다.
+
+`div` 엘리먼트 내에 열 개의 버튼이 있다면, 각 버튼 엘리먼트에 리스너를 붙이는 대신 `div` 엘리먼트에 하나의 이벤트 리스너만 붙인다.
+
+[click-event] : http://www.jspatterns.com/book/8/click-delegate.html
+
+``` js
+<div id="click-wrap">
+  <button>Click me: 0</button>
+  <button>Click two: 0</button>
+  <button>Click theree: 0</button>
+</div>
+```
+
+각 버튼에 이벤트 리스너를 붙이는 대신 `click-wrap` div에 하나의 리스너만을 붙일 것이다.
+
+* 불필요한 클릭을 걸러낼 수 있도록 이전 예제의 `myHandler()` 함수를 수정
+* 버튼에 대한 클릭만 찾으면 되기 때문에 `div`내의 다른 부분에서 발생한 클릭은 무시
+
+다음과 같이 이벤트가 발생한 노드의 `nodeName`이 `button`인지 확인하도록 `myHandler()`를 변경
+
+``` js
+// ...
+// 이벤트 객체와 이벤트가 발생한 엘리먼트를 가져온다.
+
+e = e || window.event;
+src = e.target || e.srcElement;
+
+if (src.nodeName.toLowerCase() !== "button") { // button이 아니면 리턴
+  return;
+}
+```
+
+이벤트 위임에는 불필요한 이벤트를 걸러내는 코드가 약간 추가 된다는 단점이 있다.
+
+그러나 성능상의 이점과 코드의 간결성으로 인한 장점이 단점보다 훨씬 크기 때문에 적극 추천하는 패턴
