@@ -263,7 +263,7 @@ if (document.addEventListener) { // W3C
 e = e || window.event;
 src = e.target || e.srcElement;
 
-if (src.nodeName.toLowerCase() !== "button") { // button이 아니면 리턴
+if (src.nodeName.toLowerCase() !== "button") { // button이 아니면 리턴(불필요한 다른 곳에 이벤트 발생하는 것을 방지 button일대만 실행)
   return;
 }
 ```
@@ -271,3 +271,5 @@ if (src.nodeName.toLowerCase() !== "button") { // button이 아니면 리턴
 이벤트 위임에는 불필요한 이벤트를 걸러내는 코드가 약간 추가 된다는 단점이 있다.
 
 그러나 성능상의 이점과 코드의 간결성으로 인한 장점이 단점보다 훨씬 크기 때문에 적극 추천하는 패턴
+
+## 4. 장시간 수행되는 스크립트
