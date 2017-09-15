@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <script src="http://code.jquery.com/jquery-latest.js" charset="utf-8"></script>
+  <div id="nav">
+    <ul>
+      <li><a href="">1</a></li>
+      <li><a href="">2</a></li>
+      <li><a href="">3</a></li>
+      <li><a href="">4</a></li>
+      <li><a class="d" href="">5</a></li>
+    </ul>
+  </div>
+  <script type="text/javascript">
+    var sections = [];
+    var navigations = [];
+
+    $("#nav ul li").each(function(i) {
+      console.log(navigations);
+      navigations.push($(this).find("a"));
+    });
+
+    for(var i = 0; i < navigations.length; i++) {
+      (function(i) {
+        navigations[i].on('click', function(e) {
+          e.preventDefault();
+          console.log("메롱"+i);
+        });
+      })(i);
+    }
+
+
+  // navigations[0].on('click',function(e) {
+  //   e.preventDefault();
+  //   alert('navi');
+  // })
+  //
+  // $('.d').on('click',function(e) {
+  //   e.preventDefault();
+  //   alert('dddd');
+  // })
+  //
+  // console.log($('.d'));
+  //
+  // console.log(navigations[0]);
+
+</script>
+</body>
+</html>

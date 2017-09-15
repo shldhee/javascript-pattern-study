@@ -1,0 +1,121 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<!-- saved from url=(0041)http://www.jspatterns.com/book/8/ttt.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+	<title>ttt</title>
+	<style>
+	    td {width: 50px; height: 50px; font-size: 50px; font-family: monospace; border: 1px solid lightGrey; text-align: center; color: red;}
+	    .server {color: blue;}
+	    body {font-family: Helvetica;}
+	</style>
+</head>
+<body>
+
+    <h1>Tic-tac-toe: <br>server "X" vs. client "O"</h1>
+
+    <button id="new">New game</button>
+    <button id="server">Server play</button>
+
+    <table>
+        <tbody><tr>
+            <td id="cell-1">&nbsp;</td>
+            <td id="cell-2"><span class="server">X</span></td>
+            <td id="cell-3"><span class="server">X</span></td>
+        </tr>
+        <tr>
+            <td id="cell-4">&nbsp;</td>
+            <td id="cell-5">O</td>
+            <td id="cell-6">O</td>
+        </tr>
+        <tr>
+            <td id="cell-7">&nbsp;</td>
+            <td id="cell-8">&nbsp;</td>
+            <td id="cell-9">&nbsp;</td>
+        </tr>
+
+    </tbody></table>
+
+
+<script>
+
+var ttt = {
+    // cells played so far
+    played: [],
+
+    // shorthand
+    get: function (id) {
+        return document.getElementById(id);
+    },
+
+    // handle clicks
+    setup: function () {
+        this.get('new').onclick = this.newGame;
+        this.get('server').onclick = this.remoteRequest;
+    },
+
+    // clean the board
+    newGame: function () {
+        var tds = document.getElementsByTagName("td"),
+            max = tds.length,
+            i;
+        for (i = 0; i < max; i += 1) {
+            tds[i].innerHTML = "&nbsp;";
+        }
+        ttt.played = [];
+    },
+
+    // make a request
+    remoteRequest: function () {
+        var script = document.createElement("script");
+        script.src = "server.php?callback=ttt.serverPlay&played=" + ttt.played.join(',');
+        document.body.appendChild(script);
+        // 콜백함수 실행 ttt.serverPlay(3); 숫자는 랜덤
+    },
+
+    // callback, server's turn to play
+    serverPlay: function (data) {  // data는 server.php 이 자료..랜덤으로 들어오나..?
+        // console.log(ttt.played,"ttt");
+        // console.log(data);
+        if (data.error) {
+            alert(data.error);
+            return;
+        }
+        data = parseInt(data, 10);
+        this.played.push(data);
+
+        this.get('cell-' + data).innerHTML = '<span class="server">X<\/span>';
+
+        setTimeout(function () {
+            ttt.clientPlay();
+        }, 300); // as if thinking hard
+
+    },
+
+    // client's turn to play
+    clientPlay: function () {
+        var data = 5; // 임의로 선택?
+
+        if (this.played.length === 9) {
+            alert("Game over");
+            return;
+        }
+
+        // keep coming up with random numbers 1-9
+        // until one not taken cell is found
+        while (this.get('cell-' + data).innerHTML !== "&nbsp;") {
+            data = Math.ceil(Math.random() * 9); // data값을 0~9까지 무작위로 해서 빈 셀을 찾는다.
+        }
+        this.get('cell-' + data).innerHTML = 'O';
+        this.played.push(data);
+
+    }
+
+};
+
+ttt.setup();
+
+</script>
+
+
+
+<script src="./ttt_files/server.php"></script><script src="./ttt_files/server(1).php"></script></body></html>
